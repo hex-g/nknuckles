@@ -10,8 +10,6 @@ import org.springframework.context.annotation.PropertySource;
 @SpringBootApplication
 @EnableZuulProxy
 @EnableEurekaClient
-@EntityScan(basePackages = {"hive.ishigami.entity"})
-@PropertySource("classpath:ishigami.properties")
 public class NKnucklesApplication {
 
   public static void main(String[] args) {

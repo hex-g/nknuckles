@@ -1,4 +1,3 @@
 rootProject.name = 'nknuckles'
 
 include 'pandora'
-include 'ishigami'
