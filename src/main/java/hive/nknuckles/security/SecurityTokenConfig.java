@@ -18,35 +18,50 @@ import java.util.Arrays;
 
 @EnableWebSecurity
 public class SecurityTokenConfig extends WebSecurityConfigurerAdapter {
+  private final JwtConfig jwtConfig;
+
   @Autowired
-  private JwtConfig jwtConfig;
+  public SecurityTokenConfig(final JwtConfig jwtConfig) {
+    this.jwtConfig = jwtConfig;
+  }
 
   @Override
   protected void configure(HttpSecurity http) throws Exception {
     http
-        .cors().and().csrf().disable()
-        .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+        .cors()
         .and()
-        .exceptionHandling().authenticationEntryPoint((req, rsp, e) -> rsp.sendError(HttpServletResponse.SC_UNAUTHORIZED))
+        .csrf()
+        .disable()
+        .sessionManagement()
+        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         .and()
-        .addFilterAfter(new JwtTokenAuthenticationFilter(jwtConfig), UsernamePasswordAuthenticationFilter.class)
+        .exceptionHandling()
+        .authenticationEntryPoint((req, rsp, e) -> rsp.sendError(HttpServletResponse.SC_UNAUTHORIZED))
+        .and()
+        .addFilterAfter(
+            new JwtTokenAuthenticationFilter(jwtConfig),
+            UsernamePasswordAuthenticationFilter.class
+        )
         .authorizeRequests()
-        .antMatchers(HttpMethod.POST, "/caronte" + jwtConfig.getUri()).permitAll()
-        // Role-specific routes
-        .antMatchers("/**/admin/**").hasRole("ADMIN")
-        .antMatchers("/**/pedagogue/**").hasRole("PEDAGOGUE")
-        .antMatchers("/**/student/**").hasRole("STUDENT")
+        .antMatchers(HttpMethod.POST, "/caronte" + jwtConfig.getUri())
+        .permitAll()
+        .antMatchers("/caronte/log")
+        .hasRole("ADMIN")
         // API routes
-        .antMatchers("/kirby/**").authenticated()
+        .antMatchers("/pokedex/**")
+        .hasRole("ADMIN")
+        .antMatchers("/kirby/**")
+        .authenticated()
+        .antMatchers("/mugshot/**")
+        .authenticated()
+        .antMatchers("/tamagochi/**")
+        .authenticated()
+        .antMatchers("/player/**")
+        .authenticated()
         // Block everything else 'cause I'm paranoid
-        .antMatchers("/**").denyAll();
+        .antMatchers("/**")
+        .denyAll();
   }
-
-  @Bean
-  public JwtConfig jwtConfig() {
-    return new JwtConfig();
-  }
-
 
   // TODO change this to use properties
   @Bean
