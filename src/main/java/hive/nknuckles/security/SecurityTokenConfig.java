@@ -68,7 +68,7 @@ public class SecurityTokenConfig extends WebSecurityConfigurerAdapter {
   public CorsConfigurationSource corsConfigurationSource() {
     final var config = new CorsConfiguration();
     config.setAllowedOrigins(Arrays.asList("*"));
-    config.setAllowedMethods(Arrays.asList("GET", "POST"));
+    config.setAllowedMethods(Arrays.asList("GET", "POST", "DELETE"));
     config.setAllowedHeaders(Arrays.asList("Content-Type", "Authorization"));
     config.setExposedHeaders(Arrays.asList("Content-Type", "Authorization"));
     final var source = new UrlBasedCorsConfigurationSource();
