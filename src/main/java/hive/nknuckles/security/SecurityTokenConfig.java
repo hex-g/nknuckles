@@ -43,6 +43,12 @@ public class SecurityTokenConfig extends WebSecurityConfigurerAdapter {
             UsernamePasswordAuthenticationFilter.class
         )
         .authorizeRequests()
+        // Swagger
+        .antMatchers("/swagger-ui.html")
+        .permitAll()
+        .antMatchers("/*/v2/api-docs")
+        .permitAll()
+        // Token API
         .antMatchers(HttpMethod.POST, "/caronte" + jwtConfig.getUri())
         .permitAll()
         .antMatchers("/caronte/log")
@@ -63,10 +69,7 @@ public class SecurityTokenConfig extends WebSecurityConfigurerAdapter {
         .antMatchers("/tamagochi/**")
         .authenticated()
         .antMatchers("/player/**")
-        .authenticated()
-        // Block everything else 'cause I'm paranoid
-        .antMatchers("/**")
-        .denyAll();
+        .authenticated();
   }
 
   // TODO change this to use properties
