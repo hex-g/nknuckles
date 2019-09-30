@@ -66,7 +66,7 @@ public class SecurityTokenConfig extends WebSecurityConfigurerAdapter {
         .authenticated()
         .antMatchers("/mugshot/**")
         .authenticated()
-        .antMatchers("/tamagochi/**")
+        .antMatchers("/tamagotchi/**")
         .authenticated()
         .antMatchers("/player/**")
         .authenticated();
