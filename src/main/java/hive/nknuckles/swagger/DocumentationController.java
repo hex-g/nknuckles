@@ -22,7 +22,7 @@ public class DocumentationController implements SwaggerResourcesProvider {
     resources.add(swaggerResource("kirby-service", "/kirby/v2/api-docs", "2.0"));
     resources.add(swaggerResource("player-service", "/player/v2/api-docs", "2.0"));
     resources.add(swaggerResource("pokedex-service", "/pokedex/v2/api-docs", "2.0"));
-    resources.add(swaggerResource("tamagochi-service", "/tamagochi/v2/api-docs", "2.0"));
+    resources.add(swaggerResource("tamagotchi-service", "/tamagotchi/v2/api-docs", "2.0"));
     return resources;
   }
 
