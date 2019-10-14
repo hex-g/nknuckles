@@ -43,24 +43,33 @@ public class SecurityTokenConfig extends WebSecurityConfigurerAdapter {
             UsernamePasswordAuthenticationFilter.class
         )
         .authorizeRequests()
+        // Swagger
+        .antMatchers("/swagger-ui.html")
+        .permitAll()
+        .antMatchers("/*/v2/api-docs")
+        .permitAll()
+        // Token API
         .antMatchers(HttpMethod.POST, "/caronte" + jwtConfig.getUri())
         .permitAll()
         .antMatchers("/caronte/log")
         .hasRole("ADMIN")
         // API routes
-        .antMatchers("/pokedex/**")
+        .antMatchers("/pokedex/user/**")
         .hasRole("ADMIN")
+        .antMatchers("/pokedex/student/**")
+        .hasRole("ADMIN")
+        .antMatchers("/pokedex/pedagogue/**")
+        .hasRole("ADMIN")
+        .antMatchers("/pokedex/person/**")
+        .authenticated()
         .antMatchers("/kirby/**")
         .authenticated()
         .antMatchers("/mugshot/**")
         .authenticated()
-        .antMatchers("/tamagochi/**")
+        .antMatchers("/tamagotchi/**")
         .authenticated()
         .antMatchers("/player/**")
-        .authenticated()
-        // Block everything else 'cause I'm paranoid
-        .antMatchers("/**")
-        .denyAll();
+        .authenticated();
   }
 
   // TODO change this to use properties
@@ -68,7 +77,7 @@ public class SecurityTokenConfig extends WebSecurityConfigurerAdapter {
   public CorsConfigurationSource corsConfigurationSource() {
     final var config = new CorsConfiguration();
     config.setAllowedOrigins(Arrays.asList("*"));
-    config.setAllowedMethods(Arrays.asList("GET", "POST"));
+    config.setAllowedMethods(Arrays.asList("GET", "POST", "DELETE"));
     config.setAllowedHeaders(Arrays.asList("Content-Type", "Authorization"));
     config.setExposedHeaders(Arrays.asList("Content-Type", "Authorization"));
     final var source = new UrlBasedCorsConfigurationSource();
